@@ -1,6 +1,6 @@
 export const weather = async (city="geoloc") => {
   try {
-    if (city = 'geoloc') { city = await userCity(); }
+    if (city == 'geoloc') { city = await userCity(); }
     let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=192b28bd218cb149c13d51cfd3d48358`,
                                {mode: 'cors'});
     return await response.json();
@@ -36,8 +36,23 @@ export const processWeatherJSON = (json)=> {
   return data;
 }
 
+const toAmericanSpeed = function metersPerSecondToMilesPerHour (speed) {
+  return Math.round(speed*60*60 * 0.000621371);
+}
+
+const toAmericanTemp = function celsiusToFahrenheit(c) {
+  return Math.round(c * 1.8 + 32)
+}
+
 export const metricToAmerican = (data) =>{
 
+  let copy = JSON.parse(JSON.stringify(data));
 
-  return data;
+  copy.speedMetric = "miles/h"
+  copy.tempMetric = "F"
+  copy.temp = toAmericanTemp(data.temp);
+  copy.feels = toAmericanTemp(data.feels);
+  copy.wind = toAmericanSpeed(data.wind);
+
+  return copy;
 }
