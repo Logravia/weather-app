@@ -23,12 +23,21 @@ export const userCity = async () => {
 export const processWeatherJSON = (json)=> {
   let data = {};
 
-  data.feels = json.main.feels_like
+  data.location = json.name
+  data.feels = Math.round(json.main.feels_like)
   data.humidity = json.main.humidity
   data.pressure = json.main.pressure
-  data.temp = json.main.temp
+  data.temp = Math.round(json.main.temp)
   data.weather = json.weather[0].main.toLowerCase();
   data.wind = json.wind.speed
+  data.speedMetric = "m/s"
+  data.tempMetric = "C"
+
+  return data;
+}
+
+export const metricToAmerican = (data) =>{
+
 
   return data;
 }
